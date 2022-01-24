@@ -20,4 +20,5 @@ def update_json_translation(language: str = "fr") -> None:
     f.write(json_formatted_str)
     f.close()
 
+
 update_json_translation()

@@ -42,7 +42,11 @@ def extract_translations() -> Dict[str, str]:
             # flatten matches
             matches = [item for sublist in matches for item in sublist]
             # remove dupes, ignore quotes
-            matches = [match.replace("&amp;", "&") for match in set(matches) if (match != '"' and match != "'")]
+            matches = [
+                match.replace("&amp;", "&")
+                for match in set(matches)
+                if (match != '"' and match != "'")
+            ]
             match_dict = {match: "" for match in matches}
             master_dict.update(match_dict)
 
