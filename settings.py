@@ -12,3 +12,4 @@ config.read(config_path)
 config_dict = dict(config.items("TRANSLATION"))
 
 JSON_PATH = config_dict.get("jsonpath", "../src/assets/i18n")
+HTML_FILES_PATH = config_dict.get("htmlpath", "../src/app")

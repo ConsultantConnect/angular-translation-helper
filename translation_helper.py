@@ -18,7 +18,7 @@ def _get_current_translations(language: str = "fr") -> Dict[str, str]:
 
 
 def _get_html_files() -> list[str]:
-    directory = "src/app/"
+    directory = settings.HTML_FILES_PATH
     pathname = directory + "/**/*.html"
     files = glob.glob(pathname, recursive=True)
     return files
