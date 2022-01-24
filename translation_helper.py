@@ -1,7 +1,7 @@
-import json
-from typing import Dict
-import re
 import glob
+import json
+import re
+from typing import Dict
 
 
 def get_current_translations(language: str = "fr") -> Dict[str, str]:
