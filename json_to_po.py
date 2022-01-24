@@ -1,9 +1,11 @@
 import json
 from typing import Dict
 
+import settings
+
 
 def get_current_translations(language: str = "fr") -> Dict[str, str]:
-    f = open(f"../src/assets/i18n/{language}.json")
+    f = open(f"{settings.JSON_PATH}/{language}.json")
     data = json.load(f)
     f.close()
     return data
@@ -20,7 +22,7 @@ def translation_to_po(language: str = "fr") -> str:
 
 def get_and_save_po_contents(language: str = "fr") -> None:
     contents = translation_to_po(language)
-    f = open(f"../src/assets/i18n/{language}.po", "w")
+    f = open(f"{settings.JSON_PATH}/{language}.json")
     f.write(contents)
     f.close()
 
