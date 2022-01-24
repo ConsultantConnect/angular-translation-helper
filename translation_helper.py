@@ -3,24 +3,28 @@ import json
 import re
 from typing import Dict
 
+import click
+
 import settings
+from json_to_po import get_and_save_po_contents
+from po_to_json import update_json_translation
 
 
-def get_current_translations(language: str = "fr") -> Dict[str, str]:
+def _get_current_translations(language: str = "fr") -> Dict[str, str]:
     f = open(f"{settings.JSON_PATH}/{language}.json")
     data = json.load(f)
     f.close()
     return data
 
 
-def get_html_files() -> list[str]:
-    directory = "../src/app/"
+def _get_html_files() -> list[str]:
+    directory = "src/app/"
     pathname = directory + "/**/*.html"
     files = glob.glob(pathname, recursive=True)
     return files
 
 
-def extract_translations() -> Dict[str, str]:
+def _extract_translations() -> Dict[str, str]:
     TRANSLATE_TAGS_RE = r"{{\s?(\"|')(.*?)(\"|') ?\| ?translate"
     TERNARY_TRANSLATE_TAGS_RE = (
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
@@ -29,7 +33,7 @@ def extract_translations() -> Dict[str, str]:
 
     master_dict = {}
 
-    html_files = get_html_files()
+    html_files = _get_html_files()
 
     for html_file in html_files:
         file_handler = open(
@@ -55,21 +59,54 @@ def extract_translations() -> Dict[str, str]:
     return master_dict
 
 
-def merge_translations(language: str = "fr") -> Dict[str, str]:
-    current_translations = get_current_translations(language)
-    extracted_translations = extract_translations()
+def _merge_translations(language: str = "fr") -> Dict[str, str]:
+    current_translations = _get_current_translations(language)
+    extracted_translations = _extract_translations()
     for key, _ in extracted_translations.items():
         if key in current_translations:
             extracted_translations[key] = current_translations[key]
     return extracted_translations
 
 
-def update_translation(language: str = "fr") -> None:
+@click.group()
+def update_json():
+    pass
+
+
+@update_json.command()
+@click.option("--language", default="fr", help="Target language")
+def parse_to_json(language: str) -> None:
     if len(language) > 2:
         raise Exception("Language code must be 2 characters long")
-    new_file_contents = merge_translations(language)
-    json_formatted_str = json.dumps(new_file_contents, indent=4, sort_keys=True)
-    print(json_formatted_str)
+    new_file_contents = _merge_translations(language)
+    with open(f"{settings.JSON_PATH}/{language}.json", "w", encoding="utf-8") as f:
+        json.dump(new_file_contents, f, indent=4, sort_keys=True)
+        f.write("\n")
 
 
-update_translation()
+@click.group()
+def json_to_po():
+    pass
+
+
+@json_to_po.command()
+@click.option("--language", default="fr", help="Target language")
+def generate_pofile(language: str) -> None:
+    get_and_save_po_contents(language)
+
+
+@click.group()
+def po_to_json():
+    pass
+
+
+@po_to_json.command()
+@click.option("--language", default="fr", help="Target language")
+def pofile_to_json(language: str) -> None:
+    update_json_translation(language)
+
+
+cli = click.CommandCollection(sources=[update_json, json_to_po, po_to_json])
+
+if __name__ == "__main__":
+    cli()

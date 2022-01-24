@@ -22,9 +22,6 @@ def translation_to_po(language: str = "fr") -> str:
 
 def get_and_save_po_contents(language: str = "fr") -> None:
     contents = translation_to_po(language)
-    f = open(f"{settings.JSON_PATH}/{language}.json")
+    f = open(f"{settings.JSON_PATH}/{language}.po", "w")
     f.write(contents)
     f.close()
-
-
-get_and_save_po_contents()

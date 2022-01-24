@@ -21,7 +21,5 @@ def update_json_translation(language: str = "fr") -> None:
     json_formatted_str = json.dumps(new_file_contents, indent=4, sort_keys=True)
     f = open(f"{settings.JSON_PATH}/{language}.json", "w")
     f.write(json_formatted_str)
+    f.write("\n")
     f.close()
-
-
-update_json_translation()
