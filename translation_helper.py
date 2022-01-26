@@ -24,26 +24,47 @@ def _get_html_files() -> list[str]:
     return files
 
 
+def _get_ts_files() -> list[str]:
+    directory = settings.HTML_FILES_PATH
+    pathname = directory + "/**/*.ts"
+    files = glob.glob(pathname, recursive=True)
+    return files
+
+
 def _extract_translations() -> Dict[str, str]:
     TRANSLATE_TAGS_RE = r"{{\s?(\"|')(.*?)(\"|') ?\| ?translate"
     TERNARY_TRANSLATE_TAGS_RE = (
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
     )
-    REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE]
+    HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE]
+
+    TRANSLATE_SERVICE_RE = r"translate\.get\((\'|\")(.*)(\'|\")\)"
 
     master_dict = {}
 
     html_files = _get_html_files()
+    ts_files = _get_ts_files()
 
-    for html_file in html_files:
+    html_matches = _get_regex_matches(HTML_REGEXs, html_files)
+    ts_matches = _get_regex_matches([TRANSLATE_SERVICE_RE], ts_files)
+
+    master_dict.update(html_matches)
+    master_dict.update(ts_matches)
+
+    return master_dict
+
+
+def _get_regex_matches(regexes: list[str], files: list[str]):
+    out = {}
+    for file in files:
         file_handler = open(
-            html_file,
+            file,
             "r",
         )
         file_text = file_handler.read()
         file_handler.close()
 
-        for regex in REGEXs:
+        for regex in regexes:
             matches = re.findall(regex, file_text)
             # flatten matches
             matches = [item for sublist in matches for item in sublist]
@@ -54,9 +75,8 @@ def _extract_translations() -> Dict[str, str]:
                 if (match != '"' and match != "'")
             ]
             match_dict = {match: "" for match in matches}
-            master_dict.update(match_dict)
-
-    return master_dict
+            out.update(match_dict)
+    return out
 
 
 def _merge_translations(language: str = "fr") -> Dict[str, str]:
