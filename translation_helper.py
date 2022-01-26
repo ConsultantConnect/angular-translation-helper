@@ -36,7 +36,8 @@ def _extract_translations() -> Dict[str, str]:
     TERNARY_TRANSLATE_TAGS_RE = (
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
     )
-    HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE]
+    INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
+    HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE, INNER_HTML_RE]
 
     TRANSLATE_SERVICE_RE = r"translate\.get\((\'|\")(.*)(\'|\")\)"
 
