@@ -40,6 +40,8 @@ def _extract_translations() -> Dict[str, str]:
     HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE, INNER_HTML_RE]
 
     TRANSLATE_SERVICE_RE = r"translate\.get\((\'|\")(.*)(\'|\")\)"
+    TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
+    TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE]
 
     master_dict = {}
 
@@ -47,7 +49,7 @@ def _extract_translations() -> Dict[str, str]:
     ts_files = _get_ts_files()
 
     html_matches = _get_regex_matches(HTML_REGEXs, html_files)
-    ts_matches = _get_regex_matches([TRANSLATE_SERVICE_RE], ts_files)
+    ts_matches = _get_regex_matches(TS_REGEXs, ts_files)
 
     master_dict.update(html_matches)
     master_dict.update(ts_matches)
