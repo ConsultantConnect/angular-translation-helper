@@ -39,7 +39,7 @@ def _extract_translations() -> Dict[str, str]:
     INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE, INNER_HTML_RE]
 
-    TRANSLATE_SERVICE_RE = r"translate\.get\((\'|\")(.*)(\'|\")\)"
+    TRANSLATE_SERVICE_RE = r"translate\.get\((`|\'|\")((.|\n)*?)(`|\'|\")\)"
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
     TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE]
 
@@ -75,7 +75,7 @@ def _get_regex_matches(regexes: list[str], files: list[str]):
             matches = [
                 match.replace("&amp;", "&")
                 for match in set(matches)
-                if (match != '"' and match != "'")
+                if (match != '"' and match != "'" and len(match) > 1)
             ]
             match_dict = {match: "" for match in matches}
             out.update(match_dict)
