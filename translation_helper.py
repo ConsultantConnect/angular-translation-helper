@@ -32,16 +32,14 @@ def _get_ts_files() -> list[str]:
 
 
 def _extract_translations() -> Dict[str, str]:
-    TRANSLATE_TAGS_RE = r"{{\s?(\"|')((.|\n)*?)(\"|') ?\|(.|\n)*?translate ?}}"
+    TRANSLATE_TAGS_RE = r"{{\s?(\"|')((.|\n)*?)(\"|') ?\|(.|\n)*?"
     TERNARY_TRANSLATE_TAGS_RE = (
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
     )
     INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE, INNER_HTML_RE]
 
-    TRANSLATE_SERVICE_RE = (
-        r"translate\.get\(\B'((.|\n)*?)'\B|translate\.get\((`|\")((.|\n)*?)(`|\")"
-    )
+    TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
     TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE]
 
@@ -77,9 +75,22 @@ def _get_regex_matches(regexes: list[str], files: list[str]):
             matches = [
                 match.replace("&amp;", "&")
                 for match in set(matches)
-                if (match != '"' and match != "'" and len(match) > 1)
+                if (
+                    match != '"'
+                    and match != "'"
+                    and len(match) > 1
+                    and match[0] != ","
+                    and match not in (".subscribe", ".toPromise")
+                )
             ]
-            match_dict = {match: "" for match in matches}
+            match_dict = {}
+            for match in matches:
+                match = match.replace("\n", "").replace("\r", "").replace("\\", "")
+                if match[-1] == " ":
+                    match = " ".join(match.split()) + " "
+                else:
+                    match = " ".join(match.split())
+                match_dict[match] = ""
             out.update(match_dict)
     return out
 
