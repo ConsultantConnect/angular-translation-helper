@@ -32,7 +32,7 @@ def _get_ts_files() -> list[str]:
 
 
 def _extract_translations() -> Dict[str, str]:
-    TRANSLATE_TAGS_RE = r"{{\s?(\"|')(.*?)(\"|') ?\| ?translate"
+    TRANSLATE_TAGS_RE = r"{{\s?(\"|')((.|\n)*?)(\"|') ?\| ?translate"
     TERNARY_TRANSLATE_TAGS_RE = (
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
     )
