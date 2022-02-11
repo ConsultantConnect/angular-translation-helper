@@ -142,7 +142,40 @@ def pofile_to_json(language: str) -> None:
     update_json_translation(language)
 
 
-cli = click.CommandCollection(sources=[update_json, json_to_po, po_to_json])
+@click.group()
+def update_en():
+    pass
+
+
+@update_en.command()
+@click.option("--srclang", default="fr", help="Source language")
+def update_en_vars(srclang: str) -> None:
+    if len(srclang) > 2:
+        raise Exception("Language code must be 2 characters long")
+    elif srclang == "en":
+        raise Exception("Cannot update English translations")
+
+    srclang_translations = _get_current_translations(srclang)
+    en_translations = _get_current_translations("en")
+
+    srclang_translations = {
+        key: value for key, value in srclang_translations.items() if "{{" in key
+    }
+
+    fr_var_keys = list(srclang_translations.keys())
+    en_keys = list(en_translations.keys())
+
+    new_keys = [key for key in fr_var_keys if key not in en_keys]
+
+    for key in new_keys:
+        en_translations[key] = key
+
+    with open(f"{settings.JSON_PATH}/en.json", "w", encoding="utf-8") as f:
+        json.dump(en_translations, f, indent=4, sort_keys=True)
+        f.write("\n")
+
+
+cli = click.CommandCollection(sources=[update_json, json_to_po, po_to_json, update_en])
 
 if __name__ == "__main__":
     cli()
