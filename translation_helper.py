@@ -41,7 +41,8 @@ def _extract_translations() -> Dict[str, str]:
 
     TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
-    TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE]
+    TRANSPROP_RE = r"\'(.*)\'; \/\/transProp"
+    TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE, TRANSPROP_RE]
 
     master_dict = {}
 
@@ -69,8 +70,9 @@ def _get_regex_matches(regexes: list[str], files: list[str]):
 
         for regex in regexes:
             matches = re.findall(regex, file_text)
-            # flatten matches
-            matches = [item for sublist in matches for item in sublist]
+            # flatten list, if required
+            if any(isinstance(el, (list, tuple)) for el in matches):
+                matches = [item for sublist in matches for item in sublist]
             # remove dupes, ignore quotes
             matches = [
                 match.replace("&amp;", "&")
