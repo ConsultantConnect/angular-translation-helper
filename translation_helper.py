@@ -47,7 +47,7 @@ def _extract_translations() -> Dict[str, str]:
         TEXT_RE,
     ]
 
-    TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"
+    TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"  # noqa
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
     TRANSPROP_RE = r"\'(.*)\'; \/\/ transProp"
     TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE, TRANSPROP_RE]
