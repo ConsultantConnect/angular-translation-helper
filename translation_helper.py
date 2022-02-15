@@ -37,7 +37,15 @@ def _extract_translations() -> Dict[str, str]:
         r"(\"|')([A-Za-z ]+)(\"|') : (\"|')([A-Za-z ]+)(\"|') ?\| ?translate(\"|')"
     )
     INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
-    HTML_REGEXs = [TRANSLATE_TAGS_RE, TERNARY_TRANSLATE_TAGS_RE, INNER_HTML_RE]
+    APPTOOLTIP_RE = r"\[appTooltip\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
+    TEXT_RE = r"\[text\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
+    HTML_REGEXs = [
+        TRANSLATE_TAGS_RE,
+        TERNARY_TRANSLATE_TAGS_RE,
+        INNER_HTML_RE,
+        APPTOOLTIP_RE,
+        TEXT_RE,
+    ]
 
     TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
