@@ -40,6 +40,7 @@ def _extract_translations() -> Dict[str, str]:
     INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     APPTOOLTIP_RE = r"\[appTooltip\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     TEXT_RE = r"\[text\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
+    TRANSLATE_COMMENT_RE = r"<!-- translate: \"(.*)\" -->"
     HTML_REGEXs = [
         TRANSLATE_TAGS_RE,
         TERNARY_TRANSLATE_TAGS_RE,
@@ -47,6 +48,7 @@ def _extract_translations() -> Dict[str, str]:
         INNER_HTML_RE,
         APPTOOLTIP_RE,
         TEXT_RE,
+        TRANSLATE_COMMENT_RE,
     ]
 
     TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"  # noqa
