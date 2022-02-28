@@ -1,7 +1,7 @@
 import glob
 import json
 import re
-from typing import Dict
+from typing import List, Dict
 
 import click
 
@@ -17,14 +17,14 @@ def _get_current_translations(language: str = "fr") -> Dict[str, str]:
     return data
 
 
-def _get_html_files() -> list[str]:
+def _get_html_files() -> List[str]:
     directory = settings.HTML_FILES_PATH
     pathname = directory + "/**/*.html"
     files = glob.glob(pathname, recursive=True)
     return files
 
 
-def _get_ts_files() -> list[str]:
+def _get_ts_files() -> List[str]:
     directory = settings.HTML_FILES_PATH
     pathname = directory + "/**/*.ts"
     files = glob.glob(pathname, recursive=True)
@@ -71,7 +71,7 @@ def _extract_translations() -> Dict[str, str]:
     return master_dict
 
 
-def _get_regex_matches(regexes: list[str], files: list[str]):
+def _get_regex_matches(regexes: List[str], files: List[str]):
     out = {}
     for file in files:
         file_handler = open(
