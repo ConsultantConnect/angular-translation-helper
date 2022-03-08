@@ -51,11 +51,10 @@ def _extract_translations() -> Dict[str, str]:
         TRANSLATE_COMMENT_RE,
     ]
 
-    TRANSLATE_SERVICE_RE = r"translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"  # noqa
-    TRANSLATE_INSTANT_RE = r"translate\.instant\(('|\")(.*)('|\")"
+    TRANSLATE_SERVICE_RE = r"this\.translate\.get\(\n +\'(.*)\',|translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")"  # noqa
     TAB_LABEL_RE = r"Tab\((\"|\').*?(\"|\'), ?(\"|\')(.*?)(\"|\'), (\"|\').*(\"|\')"
     TRANSPROP_RE = r"\'(.*)\'(;|,)? \/\/ transProp"
-    TS_REGEXs = [TRANSLATE_SERVICE_RE, TRANSLATE_INSTANT_RE, TAB_LABEL_RE, TRANSPROP_RE]
+    TS_REGEXs = [TRANSLATE_SERVICE_RE, TAB_LABEL_RE, TRANSPROP_RE]
 
     master_dict = {}
 
