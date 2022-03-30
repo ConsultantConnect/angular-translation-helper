@@ -1,7 +1,7 @@
 import glob
 import json
 import re
-from typing import List, Dict
+from typing import Dict, List
 
 import click
 
@@ -11,7 +11,10 @@ from po_to_json import update_json_translation
 
 
 def _get_current_translations(language: str = "fr") -> Dict[str, str]:
-    f = open(f"{settings.JSON_PATH}/{language}.json")
+    try:
+        f = open(f"{settings.JSON_PATH}/{language}.json")
+    except FileNotFoundError:
+        return {}
     data = json.load(f)
     f.close()
     return data
