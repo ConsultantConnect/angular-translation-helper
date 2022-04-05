@@ -42,6 +42,8 @@ def _extract_translations() -> Dict[str, str]:
     OR_TRANSLATE_TAGS_RE = r"\|\| ?'(.*?)' ?\| ?translate ?}}"
     INNER_HTML_RE = r"\[innerHTML\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     APPTOOLTIP_RE = r"\[appTooltip\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
+    HEADER_RE = r"header=(\"|\'){{(\"|\')(.*?)(\"|\') ?| ?translate"
+    MSG_RE = r"msg=(\"|\'){{(\"|\')(.*?)(\"|\') ?| ?translate"
     TEXT_RE = r"\[text\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     TRANSLATE_COMMENT_RE = r"<!-- translate: \"(.*)\" -->"
     HTML_REGEXs = [
@@ -50,6 +52,8 @@ def _extract_translations() -> Dict[str, str]:
         OR_TRANSLATE_TAGS_RE,
         INNER_HTML_RE,
         APPTOOLTIP_RE,
+        HEADER_RE,
+        MSG_RE,
         TEXT_RE,
         TRANSLATE_COMMENT_RE,
     ]
