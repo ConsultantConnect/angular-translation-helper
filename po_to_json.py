@@ -6,7 +6,7 @@ import polib
 import settings
 
 
-def po_to_dict(language: str = "fr") -> Dict[str, str]:
+def po_to_dict(language: str = "cy") -> Dict[str, str]:
     po_dict = {}
     pofile = polib.pofile(f"{settings.JSON_PATH}/{language}.po")
     for entry in pofile:
@@ -14,7 +14,7 @@ def po_to_dict(language: str = "fr") -> Dict[str, str]:
     return po_dict
 
 
-def update_json_translation(language: str = "fr") -> None:
+def update_json_translation(language: str = "cy") -> None:
     if len(language) > 2:
         raise Exception("Language code must be 2 characters long")
     new_file_contents = po_to_dict(language)
