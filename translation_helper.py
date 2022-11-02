@@ -10,7 +10,7 @@ from json_to_po import get_and_save_po_contents
 from po_to_json import update_json_translation
 
 
-def _get_current_translations(language: str = "fr") -> Dict[str, str]:
+def _get_current_translations(language: str = "cy") -> Dict[str, str]:
     try:
         f = open(f"{settings.JSON_PATH}/{language}.json")
     except FileNotFoundError:
@@ -116,7 +116,7 @@ def _get_regex_matches(regexes: List[str], files: List[str]):
     return out
 
 
-def _merge_translations(language: str = "fr") -> Dict[str, str]:
+def _merge_translations(language: str = "cy") -> Dict[str, str]:
     current_translations = _get_current_translations(language)
     extracted_translations = _extract_translations()
     for key, _ in extracted_translations.items():
@@ -131,7 +131,7 @@ def update_json():
 
 
 @update_json.command()
-@click.option("--language", default="fr", help="Target language")
+@click.option("--language", default="cy", help="Target language")
 def parse_to_json(language: str) -> None:
     if len(language) > 2:
         raise Exception("Language code must be 2 characters long")
@@ -147,7 +147,7 @@ def json_to_po():
 
 
 @json_to_po.command()
-@click.option("--language", default="fr", help="Target language")
+@click.option("--language", default="cy", help="Target language")
 def generate_pofile(language: str) -> None:
     get_and_save_po_contents(language)
 
@@ -158,7 +158,7 @@ def po_to_json():
 
 
 @po_to_json.command()
-@click.option("--language", default="fr", help="Target language")
+@click.option("--language", default="cy", help="Target language")
 def pofile_to_json(language: str) -> None:
     update_json_translation(language)
 
@@ -169,7 +169,7 @@ def update_en():
 
 
 @update_en.command()
-@click.option("--srclang", default="fr", help="Source language")
+@click.option("--srclang", default="cy", help="Source language")
 def update_en_vars(srclang: str) -> None:
     if len(srclang) > 2:
         raise Exception("Language code must be 2 characters long")
