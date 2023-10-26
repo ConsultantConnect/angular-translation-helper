@@ -46,6 +46,7 @@ def _extract_translations() -> Dict[str, str]:
     MSG_RE = r"msg=(\"|\'){{(\"|\')(.*?)(\"|\') ?| ?translate"
     TEXT_RE = r"\[text\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     TRANSLATE_COMMENT_RE = r"<!-- translate: \"(.*)\" -->"
+    ARIA_LABEL_RE = r"aria-label=\"\'(.+)\'\s?\|\s?translate\""
     HTML_REGEXs = [
         TRANSLATE_TAGS_RE,
         TERNARY_TRANSLATE_TAGS_RE,
@@ -56,6 +57,7 @@ def _extract_translations() -> Dict[str, str]:
         MSG_RE,
         TEXT_RE,
         TRANSLATE_COMMENT_RE,
+        ARIA_LABEL_RE,
     ]
 
     TRANSLATE_SERVICE_RE = r"this\.translate\.get\(\n +\'(.*)\',|translate\.get\(\B'((.|\n)*?)'\B(, {.*})?\)(\.subscribe|\.toPromise)|translate\.get\((`|\")((.|\n)*?)(`|\")|this\.translate\n\s+\.get\(('|\")(.*)('|\")|this\.translate\n\s+\.get\(\n\s+('|\")(.*)('|\")|translate\n\s+\.get\(('|\")(.*)('|\")|translate\n\s+\.get\(('|\"|`)(.*)('|\"|`)"  # noqa
