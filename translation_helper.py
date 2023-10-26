@@ -46,7 +46,7 @@ def _extract_translations() -> Dict[str, str]:
     MSG_RE = r"msg=(\"|\'){{(\"|\')(.*?)(\"|\') ?| ?translate"
     TEXT_RE = r"\[text\]=(\"|\')(\"|\')(.*?)(\"|\') ?| ?translate"
     TRANSLATE_COMMENT_RE = r"<!-- translate: \"(.*)\" -->"
-    ARIA_LABEL_RE = r"aria-label=\"\'(.+)\'\s?\|\s?translate\""
+    ARIA_LABEL_RE = r"=\"\'(.+)\'\s?\|\s?translate\""
     HTML_REGEXs = [
         TRANSLATE_TAGS_RE,
         TERNARY_TRANSLATE_TAGS_RE,
