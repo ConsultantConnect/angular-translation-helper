@@ -182,7 +182,9 @@ def update_en_vars(srclang: str) -> None:
     en_translations = _get_current_translations("en")
 
     srclang_translations = {
-        key: value for key, value in srclang_translations.items() if "{{" in key
+        key: value
+        for key, value in srclang_translations.items()
+        if "{{" in key or "Consultant Connect" in key
     }
 
     fr_var_keys = list(srclang_translations.keys())
